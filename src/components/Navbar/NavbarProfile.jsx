@@ -30,7 +30,7 @@ const NavProfile = () => {
 
     try {
      const res = await axios.post(
-      "http://localhost:5000/api/upload-profile",
+      "https://appifylab-backend.onrender.com/api/upload-profile",
       formData,
       {
         withCredentials: true,

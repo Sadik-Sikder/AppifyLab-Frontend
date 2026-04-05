@@ -20,25 +20,23 @@ export default function Login() {
 
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+    try {
+      const res = await fetch("https://appifylab-backend.onrender.com/api/auth/login", {
         method: "POST",
-        credentials: "include", 
-        headers: {
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json(); 
+      const data = await res.json();
 
       if (res.ok) {
-        await login();
+        await login(data.user); 
         navigate("/feed");
       } else {
-        alert(data.message || "Login failed"); 
+        alert(data.message || "Login failed");
       }
     } catch (err) {
       console.error(err);

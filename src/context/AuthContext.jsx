@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/me", {
+        const res = await fetch("https://appifylab-backend.onrender.com/api/auth/me", {
           credentials: "include",
         });
 
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
 
   const register = async (formData) => {
-    const res = await fetch("http://localhost:5000/api/auth/register", {
+    const res = await fetch("https://appifylab-backend.onrender.com/api/auth/register", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -46,20 +46,23 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async () => {
-    const res = await fetch("http://localhost:5000/api/auth/me", {
-      credentials: "include",
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      setUser(data.user);
+  const login = async (userData = null) => {
+    if (userData) {
+      setUser(userData);
+    } else {
+      const res = await fetch("https://appifylab-backend.onrender.com/api/auth/me", {
+        credentials: "include",
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setUser(data.user);
+      }
     }
   };
 
 
   const logout = async () => {
-    await fetch("http://localhost:5000/api/auth/logout", {
+    await fetch("https://appifylab-backend.onrender.com/api/auth/logout", {
       method: "POST",
       credentials: "include",
     });
