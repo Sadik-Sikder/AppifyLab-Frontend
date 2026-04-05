@@ -1,24 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Feed from './pages/Feed';
+import { AuthProvider, useAuth } from './context/AuthContext';
+
+
+function PrivateRoute({ children }) {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div>Loading...</div>;
+
+  return user ? children : <Navigate to="/" />;
+}
+function PublicRoute({ children }) {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div>Loading...</div>;
+
+  return !user ? children : <Navigate to="/feed" />;
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          } />
+          <Route path="/register" element={
+            <PublicRoute>
+              <Register  />
+            </PublicRoute>
+          } />
+          <Route
+            path="/feed"
+            element={
+              <PrivateRoute>
+                <Feed />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
